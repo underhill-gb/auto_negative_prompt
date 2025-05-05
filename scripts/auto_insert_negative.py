@@ -6,6 +6,9 @@ default_keyword = "blurry"
 # Default insertion behavior: False means append, True means prepend
 default_insert_at_start = False
 
+# Toggle to enable or disable the feature
+default_enabled = True
+
 def insert_into_negative_prompt(prompt: str, keyword: str, prepend: bool) -> str:
     if not keyword:
         return prompt
@@ -25,6 +28,11 @@ class InsertKeywordNegativePrompt(scripts.Script):
         return scripts.AlwaysVisible
 
     def process(self, p):
+        
+        enabled = shared.opts.data.get("insert_negative_keyword_enable", default_enabled)
+        if not enabled:
+            return  # Feature is disabled        
+        
         keyword = shared.opts.data.get("insert_negative_keyword", default_keyword)
         prepend = shared.opts.data.get("insert_negative_keyword_prepend", default_insert_at_start)
 
@@ -46,12 +54,18 @@ def on_ui_settings():
     section = ("insert_neg_keyword", "Negative Prompt Insert")
 
     shared.opts.add_option(
-        "insert_negative_keyword",
-        shared.OptionInfo(default_keyword, "Word(s) to insert into negative prompts", section=section)
+        "insert_negative_keyword_enable",
+        shared.OptionInfo(default_enabled, "Enable extension.", section=section)
     )
+
     shared.opts.add_option(
         "insert_negative_keyword_prepend",
-        shared.OptionInfo(default_insert_at_start, "Insert keyword(s) at beginning (instead of end)", section=section)
+        shared.OptionInfo(default_insert_at_start, "Insert keyword(s) at beginning of prompt (instead of end).", section=section)
+    )
+
+    shared.opts.add_option(
+        "insert_negative_keyword",
+        shared.OptionInfo(default_keyword, "Keyword(s) to insert into negative prompts:", section=section)
     )
 
 script_callbacks.on_ui_settings(on_ui_settings)

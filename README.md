@@ -20,8 +20,9 @@ Date: 2025-05-05
 
 ## Settings
 
-- **Word(s) to insert into negative prompts** — the keyword(s) (e.g., `blurry`, `low quality`, etc.)
+- **Enable extension** — toggle extension
 - **Insert keyword(s) at beginning (instead of end)** — toggle position of keyword in the prompt
+- **Keyword(s) to insert into negative prompts** — the keyword(s) (e.g., `blurry`, `low quality`, etc.)
 
 ## Example
 
